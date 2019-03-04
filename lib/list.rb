@@ -1,9 +1,12 @@
+require 'pry'
 class List < ActiveRecord::Base
   belongs_to :shopper
   has_many :lists_ingredients
 
   def add_item(item)
-    #find_or_create_by
+    
+    # @all << Ingredient.all.find_or_create_by(name: item)
+    # self
   end
 
   def delete_item(item)
@@ -11,5 +14,5 @@ class List < ActiveRecord::Base
 
   def check_item(item)
   end
-
+  binding.pry
 end
