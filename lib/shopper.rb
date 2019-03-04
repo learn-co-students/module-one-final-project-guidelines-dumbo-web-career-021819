@@ -7,6 +7,7 @@ class Shopper < ActiveRecord::Base
   end
 
   def create_list(name)
+    #createlist!
   end
 
   def check_item(list, item)
