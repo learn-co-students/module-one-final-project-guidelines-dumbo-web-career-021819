@@ -16,6 +16,6 @@ p Shopper.all
 
 
 
-binding.pry
+# binding.pry
 
 puts "hey"
