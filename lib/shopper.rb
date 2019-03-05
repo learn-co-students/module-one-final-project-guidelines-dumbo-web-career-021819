@@ -3,7 +3,7 @@ class Shopper < ActiveRecord::Base
   has_many :lists
   has_many :list_items, through: :list
 
-    ################ .downcase all List and Item names! ##############
+    ################ .downcase Item names! ##############
 
   def create_list(list_name) # it works!
     new_list = List.create(name: list_name, shopper_id: self.id)

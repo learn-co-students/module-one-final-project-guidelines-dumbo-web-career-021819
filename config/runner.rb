@@ -1,7 +1,6 @@
 require_relative '../config/environment.rb'
 
 
-
 carla = Shopper.create(name: "Carla")
 # party_list = List.create(name: "party")
 party_list = carla.create_list("party")
