@@ -11,14 +11,6 @@ class List < ActiveRecord::Base
     "#{item.name.capitalize} - added to your list: #{self.name}!"
   end
 
-  def item_exists(name)
-    Item.find_by(name: name.downcase)
-  end
-
-  def is_in_list(inst)
-    ListItem.find_by(list_id: self.id, item_id: inst.id)
-  end
-
   def delete_item(name)
     item_instance = item_exists(name)
     if item_exists(name) and is_in_list(item_instance)
@@ -32,13 +24,33 @@ class List < ActiveRecord::Base
   def check_item(name)
     item = item_exists(name)
     listitem = is_in_list(item)
-    if item and listitem
-      if listitem.still_needed
-        listitem.update(still_needed: false)
-      else
-        listitem.update(still_needed: true)
-      end
-    end
+    toggle_still_needed(listitem) if item and listitem
+    listitem.still_needed ? "#{name.capitalize} is on your list." : "#{name.capitalize} was checked off."
+  end
+
+  def items
+    listitem_to_name(all_needed_listitems)
+  end
+
+  alias :all :items #You can all #items OR #all and they do the same thing
+  alias :list :items
+
+  def checked_off
+    listitem_to_name(not_needed_listitems)
+  end
+
+  def all_items
+    listitem_to_name(all_listitems)
+  end
+
+  private ###############################################################
+
+  def item_exists(name)
+    Item.find_by(name: name.downcase)
+  end
+
+  def is_in_list(inst)
+    ListItem.find_by(list_id: self.id, item_id: inst.id)
   end
 
   def all_listitems
@@ -58,18 +70,12 @@ class List < ActiveRecord::Base
     get_items.map(&:name)
   end
 
-  def items
-    listitem_to_name(all_needed_listitems)
-  end
-
-  alias :all :items #You can all #items OR #all and they do the same thing
-
-  def checked_off
-    listitem_to_name(not_needed_listitems)
-  end
-
-  def all_items
-    listitem_to_name(all_listitems)
+  def toggle_still_needed(listitem)
+    if listitem.still_needed
+      listitem.update(still_needed: false)
+    else
+      listitem.update(still_needed: true)
+    end
   end
 
 end
