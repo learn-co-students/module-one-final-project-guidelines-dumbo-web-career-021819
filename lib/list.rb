@@ -11,33 +11,33 @@ class List < ActiveRecord::Base
     "#{item.name.capitalize} - added to your list: #{self.name}!"
   end
 
+  def item_exists(name)
+    Item.find_by(name: name.downcase)
+  end
+
+  def is_in_list(inst)
+    ListItem.find_by(list_id: self.id, item_id: inst.id)
+  end
+
   def delete_item(name)
-    item = Item.find_by(name: name.downcase)
-    if item
-      list_item = ListItem.find_by(list_id: self.id, item_id: item.id)
-    else
-      "#{name.capitalize} doesn't exist."
-    end
-    if list_item
-      list_item.destroy
+    item_instance = item_exists(name)
+    if item_exists(name) and is_in_list(item_instance)
+      item_instance.destroy
       "Deleted '#{name.capitalize}'"
     else
-      "#{name.capitalize} wasn't on your list: #{self.name}."
+      "#{name.capitalize} wasn't on your list."
     end
   end
 
   def check_item(name)
-    item = Item.find_by(name: name.downcase)
-    if item
-      list_item = ListItem.find_by(list_id: self.id, item_id: item.id)
-    else
-      "#{name.capitalize} doesn't exist." #{doesn't get here}
-    end
-    if list_item #doesn't persist
-      list_item.still_needed ? list_item.still_needed = false : list_item.still_needed = true
-      list_item.save
-    else
-      "#{name.capitalize} wasn't on your list."
+    item = item_exists(name)
+    listitem = is_in_list(item)
+    if item and listitem
+      if listitem.still_needed
+        listitem.update(still_needed: false)
+      else
+        listitem.update(still_needed: true)
+      end
     end
   end
 
@@ -46,7 +46,7 @@ class List < ActiveRecord::Base
   end
 
   def all_needed_listitems
-    all_listitems.select {|item| item.still_needed}
+    all_listitems.select {|item| item.still_needed}.compact #removes nil
   end
 
   def not_needed_listitems
@@ -54,7 +54,7 @@ class List < ActiveRecord::Base
   end
 
   def listitem_to_name(array)
-    get_items = array.map(&:item)
+    get_items = array.map(&:item).compact #why is it returning nils?
     get_items.map(&:name)
   end
 
@@ -71,4 +71,5 @@ class List < ActiveRecord::Base
   def all_items
     listitem_to_name(all_listitems)
   end
+
 end
