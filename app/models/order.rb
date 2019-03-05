@@ -3,24 +3,36 @@ class Order < ActiveRecord::Base
   belongs_to :restaurant
   has_many :foods, through: :restaurant
 
-  @@order = []
+  @order = []
 
   def grand_total
-    # we need to be able to add MenuItems to order first
-    # in order to sum the total of all MenuItems within
-    # order
+    orders = self.order
+    total = 0
+    orders.map do |food_item|
+      total += food_item.price
+    end
+    return total
   end
+
+  # the above order works
 
   def add_to_order(food) #object
-    @@order << food
+    if @order == nil
+      @order = [ food ]
+    else
+      @order << food
+    end
   end
 
-  def self.order
-    @@order
+  # the above order works
+
+  def order
+    @order
   end
 
-
-
+  def order=(order)
+    @order = order
+  end
 
 
 end

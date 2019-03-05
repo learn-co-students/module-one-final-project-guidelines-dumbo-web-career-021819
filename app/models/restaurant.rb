@@ -6,7 +6,18 @@ class Restaurant < ActiveRecord::Base
   has_many :foods
 
   def show_menu
-    Food.all.where(restaurant_id: self.id)
+    menu = self.foods
+    food_info = menu.map do |food|
+      { "name" => food.name, "description" =>  food.description, "price" => food.price }
+    end
+    return food_info
   end
+
+  def self.all_names
+    Restaurant.all.map { |restaurant| restaurant.name }
+  end
+
+
+
 
 end

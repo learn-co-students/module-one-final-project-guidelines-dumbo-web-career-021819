@@ -17,10 +17,14 @@ fried_rice = Food.create(name: "Fried Rice", price: 4.00, restaurant_id: panda_e
 
 jep_order_1 = Order.create(restaurant_id: panda_express.id, customer_id: jep.id, location: "175 Jefferson Ave, Queens, NY", received?: false)
 
+matt_order = Order.create(restaurant_id: panda_express.id, customer_id: matt.id, location: "123 ABC rd Queens,NY", received?: false)
 
 
 
+jep_order_1.add_to_order(spring_roll)
 
+matt_order.add_to_order(lo_mein)
+matt_order.add_to_order(fried_rice)
 
 
 
