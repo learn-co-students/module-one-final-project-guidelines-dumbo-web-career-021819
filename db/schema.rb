@@ -10,21 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 4) do
+ActiveRecord::Schema.define(version: 7) do
 
-  create_table "ingredients", force: :cascade do |t|
+  create_table "items", force: :cascade do |t|
     t.string "name"
+  end
+
+  create_table "list_items", force: :cascade do |t|
+    t.integer "list_id"
+    t.integer "item_id"
+    t.boolean "still_needed"
   end
 
   create_table "lists", force: :cascade do |t|
     t.string  "name"
     t.integer "shopper_id"
-  end
-
-  create_table "lists_ingredients", force: :cascade do |t|
-    t.integer "list_id"
-    t.integer "ingredient_id"
-    t.boolean "still_needed"
   end
 
   create_table "shoppers", force: :cascade do |t|
