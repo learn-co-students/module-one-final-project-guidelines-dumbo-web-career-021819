@@ -17,15 +17,23 @@ class List < ActiveRecord::Base
       item_instance.destroy
       "Deleted '#{name.capitalize}'"
     else
-      "#{name.capitalize} wasn't on your list."
+      "#{name.capitalize} wasn\'t on your list."
     end
   end
 
   def check_item(name)
     item = item_exists(name)
     listitem = is_in_list(item)
-    toggle_still_needed(listitem) if item and listitem
-    listitem.still_needed ? "#{name.capitalize} is on your list." : "#{name.capitalize} was checked off."
+    if item and listitem
+      toggle_still_needed(listitem)
+    # else @DOESNT WORK  throws error cuz listitem depends on item!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    #   "#{name.capitalize} wasn\'t on your list."
+    end
+    if listitem.still_needed
+      "#{name.capitalize} is on your list."
+    else
+      "#{name.capitalize} was checked off."
+    end
   end
 
   def items
