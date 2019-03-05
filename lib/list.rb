@@ -9,6 +9,8 @@ class List < ActiveRecord::Base
     # self
   end
 
+
+
   def delete_item(item)
   end
 
