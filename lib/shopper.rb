@@ -6,7 +6,7 @@ class Shopper < ActiveRecord::Base
     ################ .downcase all List and Item names! ##############
 
   def create_list(list_name) # it works!
-    new_list = List.create(name: list_name.name, shopper_id: self.id)
+    new_list = List.create(name: list_name, shopper_id: self.id)
   end
 
   def delete_shopper
@@ -15,9 +15,7 @@ class Shopper < ActiveRecord::Base
 
   def list_names
     #shows array of names of all lists the shopper has
-    self.lists.map do |list_instance|
-      list_instance.name
-    end
+    self.lists.map(&:name)
   end
 
 end
