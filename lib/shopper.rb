@@ -7,12 +7,17 @@ class Shopper < ActiveRecord::Base
   end
 
   def create_list(name)
+    List.create(name: name, shopper_id: self.id)
   end
 
   def check_item(list, item)
   end
 
   def delete_item(list, item)
+  end
+
+  def lists
+    #shows all lists the shopper has
   end
 
 end

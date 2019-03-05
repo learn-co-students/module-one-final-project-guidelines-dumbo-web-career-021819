@@ -4,9 +4,7 @@ class List < ActiveRecord::Base
   has_many :lists_ingredients
 
   def add_item(item)
-
-    # @all << Ingredient.all.find_or_create_by(name: item)
-    # self
+    ListIngredient.find_or_create_by(name: item, list_id: self.id)
   end
 
   def delete_item(item)
