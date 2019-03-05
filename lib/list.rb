@@ -7,6 +7,8 @@ class List < ActiveRecord::Base
     ListIngredient.find_or_create_by(name: item, list_id: self.id)
   end
 
+
+
   def delete_item(item)
   end
 
