@@ -23,17 +23,13 @@ class List < ActiveRecord::Base
 
   def check_item(name)
     item = item_exists(name)
-    listitem = is_in_list(item)
-    if item and listitem
-      toggle_still_needed(listitem)
-    # else @DOESNT WORK  throws error cuz listitem depends on item!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #   "#{name.capitalize} wasn\'t on your list."
+    if item
+      listitem = is_in_list(item)
+      if listitem
+        return toggle_still_needed(listitem)
+      end
     end
-    if listitem.still_needed
-      "#{name.capitalize} is on your list."
-    else
-      "#{name.capitalize} was checked off."
-    end
+    "#{name.capitalize} wasn't on your list."
   end
 
   def items
@@ -81,8 +77,10 @@ class List < ActiveRecord::Base
   def toggle_still_needed(listitem)
     if listitem.still_needed
       listitem.update(still_needed: false)
+      "#{listitem.item.name.capitalize} was checked off."
     else
       listitem.update(still_needed: true)
+      "#{listitem.item.name.capitalize} is on your list."
     end
   end
 
