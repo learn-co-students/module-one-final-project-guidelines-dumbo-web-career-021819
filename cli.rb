@@ -1,7 +1,8 @@
 require 'tty-prompt'
 require 'pry'
-# require_relative 'item'
-# require_relative 'shopper'
+
+#The below is causing welcome to loop twice
+require_relative 'config/environment.rb'
 prompt = TTY::Prompt.new
 
 
@@ -39,4 +40,6 @@ end
 welcome_choice
 
 
-# puts "Hey"
+binding.pry
+
+puts 'hey'
