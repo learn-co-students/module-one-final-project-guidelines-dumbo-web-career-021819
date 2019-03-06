@@ -1,7 +1,7 @@
 require 'pry'
 class Shopper < ActiveRecord::Base
   has_many :lists
-  has_many :list_items, through: :list
+  has_many :list_items, through: :lists
 
     ################ .downcase Item names! ##############
 
