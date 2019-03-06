@@ -20,4 +20,6 @@ class Restaurant < ActiveRecord::Base
     Restaurant.all.map { |restaurant| restaurant.name }
   end
 
+
+
 end
