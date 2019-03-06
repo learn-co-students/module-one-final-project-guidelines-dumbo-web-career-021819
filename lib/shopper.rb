@@ -9,7 +9,7 @@ class Shopper < ActiveRecord::Base
     new_list = List.create(name: list_name, shopper_id: self.id)
   end
 
-  def delete_shopper
+  def delete_shopper # Should it also delete all associated ListItems?
     self.delete
   end
 
