@@ -2,12 +2,18 @@ require_relative '../config/environment.rb'
 
 
 carla = Shopper.create(name: "Carla")
-# party_list = List.create(name: "party")
-party_list = carla.create_list("party")
-# grocery_list = List.create(name: "grocery")
-# carla.create_list(grocery_list)
+partylist = carla.create_list("party")
 
-# freak_list = List.create(name: "FrEaK")
+partylist.add_item('beer')
+partylist.add_item('potatoes')
+partylist.add_item('butter')
+partylist.delete_item('butter')
+partylist.add_item('streamers')
+partylist.check_item('streamers')
+
+
+
+
 
 
 
