@@ -14,6 +14,20 @@ prompt = TTY::Prompt.new
 #   Kano
 #   Jax
 
+shopper_names = []
+
+def who_am_i
+  prompt = TTY::Prompt.new
+  prompt.select("Welcome to GroCart! Who's Here?") do   |Shopper.all|
+    Shopper.all.name
+    Shopper.all.name.choice
+    option.choice "New Name"
+  end
+end
+
+
+
+
 def welcome
   prompt = TTY::Prompt.new
   prompt.select("Welcome! What would you like to do?") do |option|
@@ -26,18 +40,21 @@ def welcome_choice
   prompt = TTY::Prompt.new
   if welcome == 'Add to an Existing List'
     prompt.select("Which list would you like to add to?") do |option|
+
       option.choice 'something soemthing'
       option.choice 'merdeeeeee'
       # Access my lists...
       end
-  else
+   else
     list_name = prompt.ask("What would you like to name your list?", required: true)
     list_name = gets.chomp
     ## Pass in list_name to Shopper.create_list(list_name)
   end
 end
 
-welcome_choice
+def
+
+who_am_i
 
 
 binding.pry
