@@ -6,18 +6,19 @@ class List < ActiveRecord::Base
   ################ .downcase all List and Item names! ##############
 
   def add_item(name) #adds item to list
-    item = Item.find_or_create_by(name: name.downcase)
-    list_item = ListItem.find_or_create_by(list_id: self.id, item_id: item.id, still_needed: true)
+    item = Item.find_or_create_by(name: name.downcase) # adding still_needed: default true to class, not here
+    list_item = ListItem.find_or_create_by(list_id: self.id, item_id: item.id) #here causes duplicates
     # "#{item.name.capitalize} - added to your list: #{self.name}!"
   end
 
   def delete_item(name) #deletes item from list
-    item_instance = item_exists(name)
-    if item_exists(name) && is_in_list(item_instance)
-      is_in_list(item_instance).destroy
+    item = Item.find_by(name: name.downcase)
+    list_item = ListItem.find_by(list_id: self.id, item_id: item.id)
+    if item && list_item
+      list_item.destroy
     end
     #   "Deleted '#{name.capitalize}'"
-    # else ############DELETES ITEM, NOT LISTITEM!!!
+    # else
     #   "#{name.capitalize} wasn\'t on your list."
     # end
   end
@@ -29,19 +30,14 @@ class List < ActiveRecord::Base
       end
       list_item.still_needed = !list_item.still_needed
       list_item.save
-    else
-      "#{name.capitalize} wasn't on your list."
+    # else
+    #   "#{name.capitalize} wasn't on your list."
     end
   end
 
   def items #lists all item names that are NOT checked in the list
     self.list_items.where(still_needed: true).map(&:item).map(&:name)
   end
-
-  alias :list :items  #You can all #items OR #all and they do the same thing
-  alias :all_names :items
-  alias :all_items :items
-  alias :all :items
 
   def checked_off # lists all item names that ARE checked in the list.
     self.list_items.where(still_needed: false).map(&:item).map(&:name)
@@ -65,15 +61,15 @@ class List < ActiveRecord::Base
 
   private ##########################################################################################################
 
-  def item_exists(name) # accepts name, returns instance of item
-    #################### if exists, returns nil if not
-    Item.find_by(name: name.downcase)
-  end
-
-  def is_in_list(inst) # accepts Item INSTANCE - Returns ListItem INSTANCE
-    #################### if the shopper already has one, returns nil if not
-    ListItem.find_by(list_id: self.id, item_id: inst.id)
-  end
+  # def item_exists(name) # accepts name, returns instance of item
+  #   #################### if exists, returns nil if not
+  #   Item.find_by(name: name.downcase)
+  # end
+  #
+  # def is_in_list(inst) # accepts Item INSTANCE - Returns ListItem INSTANCE
+  #   #################### if the shopper already has one, returns nil if not
+  #   ListItem.find_by(list_id: self.id, item_id: inst.id)
+  # end
   #
   # def toggle_still_needed(listitem) #changes still_needed
   #   if listitem.still_needed
