@@ -16,7 +16,7 @@ class List < ActiveRecord::Base
     if item_exists(name) and is_in_list(item_instance)
       item_instance.destroy
       "Deleted '#{name.capitalize}'"
-    else
+    else ############DELETES ITEM, NOT LISTITEM!!!
       "#{name.capitalize} wasn\'t on your list."
     end
   end
