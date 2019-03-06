@@ -30,7 +30,7 @@ wok_fired_shrimp = Food.create(name: "Wok-Fired Shrimp", price: 12.75, restauran
 sweetfire_chicken = Food.create(name: "Sweetfire Chicken Breast", price: 12.25, restaurant_id: panda_express.id, description: "Crispy, white-meat chicken, red bell peppers, onions and pineapples in a bright and sweet chili sauce")
 black_pepper_chicken = Food.create(name: "Black Pepper Chicken", price: 14.75, restaurant_id: panda_express.id, description: "Marinated chicken, celery and onions in a bold black pepper sauce")
 
-al_pastor= Food.create(name: "Al Pastor", price: 22.00, restaurant_id: , description: "Braised boneless berkshire pork ribs, pineapple-tomatillo, salsa, achiote, roasted poblano, charred spring onions, seasoned long grain rice")
+al_pastor= Food.create(name: "Al Pastor", price: 22.00, restaurant_id: gran_electrica.id , description: "Braised boneless berkshire pork ribs, pineapple-tomatillo, salsa, achiote, roasted poblano, charred spring onions, seasoned long grain rice")
 mariscos_al_mojo = Food.create(name: "Mariscos Al Mojo De Ajo", price: 27.00, restaurant_id: gran_electrica.id, description: "Market seafood, roasted garlic, chipotle butter, micro greens, seasoned long grain rice")
 ceviche_de_atun = Food.create(name: "Ceviche De Atun", price: 17.00, restaurant_id: gran_electrica.id, description: "Market Tuna, avocado, grapefruit, cilantro, leche de tigre, chayote, poblano, serrgano, shallots")
 ensalada_de_cesar = Food.create(name: "Ensalada de Cesar", price: 14.00, restaurant_id: gran_electrica.id, description: "Market greens, housemade cesar dressing, cotija, anchiovies, guajillo, oregano, spiced croutons")
@@ -76,7 +76,7 @@ grilled_portobello_mushroom = Food.create(name:"Grilled Portobello Mushroom", pr
 bruschetta = Food.create(name: "Bruschetta", price: 5.95, restaurant_id: andiamo.id, description:"Linda's special recipe")
 healthy_heart_salad = Food.create(name: "Healthy Heart Salad", price: 8.95, restaurant_id: andiamo.id, description:"With seasonal fresh vegetables, tomato, onion, and fresh seasonal fruit tossed in balsamic vinegar")
 tri_color_salad = Food.create(name: "Tri-Color Salad", price: 8.95, restaurant_id: andiamo.id, description: "With tomato and onion in a balsamic vinaigrette")
-caesar_salad = Food.create(name: "Caesar Salad", price: 8.95, restaurant_id:, description:"Classic style with freshly shaved parmesan cheese and herb croutons")
+caesar_salad = Food.create(name: "Caesar Salad", price: 8.95, restaurant_id: andiamo.id, description:"Classic style with freshly shaved parmesan cheese and herb croutons")
 linguine = Food.create(name:"Linguine", price: 18.95, restaurant_id: andiamo.id, description: "With white clam sauce with fresh clams")
 rigatoni = Food.create(name:"Rigatoni", price: 21.50 , restaurant_id: andiamo.id, description: "With New Zealand mussels, littleneck clams, and shrimp in a chardonnay wine sauce with tomatoes and scallions")
 chicken_country_style = Food.create(name: "Chicken Country Style", price: 17.95, restaurant_id: andiamo.id, description: "Chunks of white meat with chicken sauteed with sweet sausage, peppers, tomato, and fresh herbs")

@@ -17,7 +17,7 @@ class Restaurant < ActiveRecord::Base
   end
 
   def self.all_names
-    Restaurant.all.map { |restaurant| restaurant.name }
+    Restaurant.all.map { |restaurant| restaurant.name }.uniq
   end
 
 
