@@ -14,7 +14,7 @@ class List < ActiveRecord::Base
   def delete_item(name) #deletes item from list (and ItemList?)
     item_instance = item_exists(name)
     if item_exists(name) and is_in_list(item_instance)
-      item_instance.destroy
+      is_in_list(item_instance).destroy
       "Deleted '#{name.capitalize}'"
     else ############DELETES ITEM, NOT LISTITEM!!!
       "#{name.capitalize} wasn\'t on your list."
@@ -22,29 +22,32 @@ class List < ActiveRecord::Base
   end
 
   def check_item(name) # changes the item's still_needed boolean
-    item = item_exists(name)
-    if item
-      listitem = is_in_list(item)
-      if listitem
-        return toggle_still_needed(listitem)
+    if self.items.include?(name)
+      list_item = ListItem.all.find do |inst|
+        inst.item.name == name && inst.list_id == self.id
       end
+      list_item.still_needed = !list_item.still_needed
+      list_item.save
+    else
+      "#{name.capitalize} wasn't on your list."
     end
-    "#{name.capitalize} wasn't on your list."
   end
 
   def items #lists all item names that are NOT checked in the list)
-    listitem_to_name(all_needed_listitems)
+    self.list_items.where(still_needed: true).map(&:item).map(&:name)
   end
 
-  alias :all :items #You can all #items OR #all and they do the same thing
-  alias :list :items
+  alias :list :items  #You can all #items OR #all and they do the same thing
+  alias :all_names :items
+  alias :all_items :items
+  alias :all :items
 
   def checked_off # lists all item names that ARE checked in the list.
-    listitem_to_name(not_needed_listitems)
+    self.list_items.where(still_needed: false).map(&:item).map(&:name)
   end
 
   def all_items # lists all item names, both checked and unchecked, in the list
-    listitem_to_name(all_listitems)
+    self.list_items.where.map(&:item).map(&:name) #could combine #items and #checkoff
     ############### Can we make it so you see all unchecked items first
     # in alphabetical order, and all checked items second in alphabetical
     # order? Ideally we could differentiate the two easily, maybe just a
@@ -69,23 +72,6 @@ class List < ActiveRecord::Base
   def is_in_list(inst) # accepts Item INSTANCE - Returns ListItem INSTANCE
     #################### if the shopper already has one, returns nil if not
     ListItem.find_by(list_id: self.id, item_id: inst.id)
-  end
-
-  def all_listitems # finds all ListItem INSTANCES with the list's ID.
-    ListItem.all.where(list_id: self.id)
-  end
-
-  def all_needed_listitems # same as all_listitems ^, only returns if UNCHECKED (still_needed: true)
-    all_listitems.select {|item| item.still_needed}.compact #removes nil
-  end
-
-  def not_needed_listitems # same as all_listitems ^^, only returns if CHECKED (still_needed: false)
-    all_listitems.reject {|inst| all_needed_listitems.include?(inst)}
-  end
-
-  def listitem_to_name(array) #Takes array of ListItems and returns array of Item names
-    get_items = array.map(&:item).compact #why is it returning nils?
-    get_items.map(&:name)
   end
 
   def toggle_still_needed(listitem) #changes still_needed
