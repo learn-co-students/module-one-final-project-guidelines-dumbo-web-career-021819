@@ -27,9 +27,11 @@ ActiveRecord::Schema.define(version: 20190305195450) do
   create_table "orders", force: :cascade do |t|
     t.integer "customer_id"
     t.integer "restaurant_id"
-    t.float   "total"
+    t.float   "total",             default: 0.0
     t.string  "location"
-    t.boolean "received?"
+    t.boolean "received?",         default: false
+    t.string  "deliver_or_pickup", default: "deliver"
+    t.string  "cash_or_card"
   end
 
   create_table "restaurants", force: :cascade do |t|
