@@ -8,17 +8,18 @@ class List < ActiveRecord::Base
   def add_item(name) #adds item to list
     item = Item.find_or_create_by(name: name.downcase)
     list_item = ListItem.find_or_create_by(list_id: self.id, item_id: item.id, still_needed: true)
-    "#{item.name.capitalize} - added to your list: #{self.name}!"
+    # "#{item.name.capitalize} - added to your list: #{self.name}!"
   end
 
-  def delete_item(name) #deletes item from list (and ItemList?)
+  def delete_item(name) #deletes item from list
     item_instance = item_exists(name)
-    if item_exists(name) and is_in_list(item_instance)
+    if item_exists(name) && is_in_list(item_instance)
       is_in_list(item_instance).destroy
-      "Deleted '#{name.capitalize}'"
-    else ############DELETES ITEM, NOT LISTITEM!!!
-      "#{name.capitalize} wasn\'t on your list."
     end
+    #   "Deleted '#{name.capitalize}'"
+    # else ############DELETES ITEM, NOT LISTITEM!!!
+    #   "#{name.capitalize} wasn\'t on your list."
+    # end
   end
 
   def check_item(name) # changes the item's still_needed boolean
@@ -33,7 +34,7 @@ class List < ActiveRecord::Base
     end
   end
 
-  def items #lists all item names that are NOT checked in the list)
+  def items #lists all item names that are NOT checked in the list
     self.list_items.where(still_needed: true).map(&:item).map(&:name)
   end
 
@@ -47,22 +48,22 @@ class List < ActiveRecord::Base
   end
 
   def all_items # lists all item names, both checked and unchecked, in the list
-    self.list_items.where.map(&:item).map(&:name) #could combine #items and #checkoff
+    self.list_items.map(&:item).map(&:name) #could combine #items and #checkoff
     ############### Can we make it so you see all unchecked items first
     # in alphabetical order, and all checked items second in alphabetical
     # order? Ideally we could differentiate the two easily, maybe just a
     # line, or possibly something as cool as squares and checks next to each?
   end
 
-  def check_off_all
-    0 #all items become still_needed: false
-  end
+  # def check_off_all
+  #   0 #all items become still_needed: false
+  # end
+  #
+  # def need_all
+  #   0 #all items become still_needed: true
+  # end
 
-  def need_all
-    0 #all items become still_needed: true
-  end
-
-  private ###############################################################
+  private ##########################################################################################################
 
   def item_exists(name) # accepts name, returns instance of item
     #################### if exists, returns nil if not
@@ -73,15 +74,15 @@ class List < ActiveRecord::Base
     #################### if the shopper already has one, returns nil if not
     ListItem.find_by(list_id: self.id, item_id: inst.id)
   end
-
-  def toggle_still_needed(listitem) #changes still_needed
-    if listitem.still_needed
-      listitem.update(still_needed: false)
-      "#{listitem.item.name.capitalize} was checked off."
-    else
-      listitem.update(still_needed: true)
-      "#{listitem.item.name.capitalize} is on your list."
-    end
-  end
+  #
+  # def toggle_still_needed(listitem) #changes still_needed
+  #   if listitem.still_needed
+  #     listitem.update(still_needed: false)
+  #     "#{listitem.item.name.capitalize} was checked off."
+  #   else
+  #     listitem.update(still_needed: true)
+  #     "#{listitem.item.name.capitalize} is on your list."
+  #   end
+  # end
 
 end
