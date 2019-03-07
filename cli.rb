@@ -14,15 +14,15 @@ prompt = TTY::Prompt.new
 #   Kano
 #   Jax
 
-choices = [
-  {name: 'Create New User', value: Shopper.create},
-  {name: 'Log In', value: List.new }
-]
+# choices = [
+#   {name: 'Create New User', value: Shopper.create},
+#   {name: 'Log In', value: List.new }
+# ]
 
-prompt.select('What to do?') do |beginning|
-  beginning.choice "Create New User"
-  beginning.choice "Create New List"
-end
+# prompt.select('What to do?') do |beginning|
+#   beginning.choice "Create New User"
+#   beginning.choice "Create New List"
+# end
 
 
 
