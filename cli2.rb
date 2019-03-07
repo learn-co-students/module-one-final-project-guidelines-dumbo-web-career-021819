@@ -24,8 +24,6 @@ def new_list_for_user
   List.create(name: new_list_name, shopper_id: @username.id)
 end
 
-# new_list_for_user
-
 def select_name
   prompt = TTY::Prompt.new
   prompt.select("Select your name.", Shopper.all.map(&:name))
