@@ -37,12 +37,15 @@ class Order < ActiveRecord::Base
 
   # create a method that says a customer received the order
 
-  # def receive_order
-  #   if self.total > 0.0
-  #     self.update(received?: true)
-  #     return self
-  #   end
-  # end
+  def delete_food(food_name)
+    food_obj = Food.find_by(name: food_name)
+    order = self.order
+    if order.include?(food_obj)
+      # delete the first occurence of this item
+      order.delete_at(order.index(food_obj))
+    end
+    return order
+  end
 
   def complete_order
     total = self.grand_total

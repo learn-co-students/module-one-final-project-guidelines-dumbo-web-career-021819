@@ -109,12 +109,19 @@ ActiveRecord::Base.logger = nil
     puts "------------------------------------------------------------------"
     puts "What would you like to add to your order? (if nothing else type 'done')"
     puts "Type in the name of the food exactly as it appears in the menu:"
+    puts "If you would like to delete an item from your order type 'delete,<food>':"
     puts "------------------------------------------------------------------"
     # allows us to enter foods that are not on the menu
     food_choice = gets.chomp
     puts "------------------------------------------------------------------"
+
+    delete_food_item = food_choice.split(",")
+    delete_food_item = delete_food_item[1]
+
     if food_choice == 'done' || food_choice == 'Done'
       break
+    elsif food_choice == "delete,#{delete_food_item}" && Restaurant.find_by(name: restaurant_name).foods.find_by(name: delete_food_item) != nil
+      customer_order.delete_food(delete_food_item)
     end
 
     if Restaurant.find_by(name: restaurant_name).foods.map{|food| food.name}.include?(food_choice)
@@ -125,7 +132,17 @@ ActiveRecord::Base.logger = nil
       # Healthy Heart Salad : 8.95
       # Healthy Heart Salad : 8.95
       # Tri-Color Salad : 8.95 BUG HERE , THE TOTAL IS LONG NUM
+
+    elsif food_choice == "delete,#{delete_food_item}" && Restaurant.find_by(name: restaurant_name).foods.find_by(name: delete_food_item) != nil
+      
+      puts customer_order.show_order
+      puts "------------------------------------------------------------------"
+      puts "You've delete #{delete_food_item} from your order."
+      puts "------------------------------------------------------------------"
+    elsif food_choice == 'done' || food_choice == 'Done'
+      break
     else
+      puts customer_order.show_order
       formatted_menu
       puts "That dish is not on the menu. Please type in a dish from the menu:"
       puts "------------------------------------------------------------------"
