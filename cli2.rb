@@ -14,8 +14,12 @@ def sign_up
   prompt = TTY::Prompt.new
   prompt.ask("What is your name?", required: true)
 end
- 
-username = sign_up
+
+@username = sign_up
+
+def new_list_for_user
+  new_list = List.create
+end
 
 
 #
@@ -58,4 +62,3 @@ end
 # tty_check_item_on_list
 # tty_add_item_to_list
 # tty_delete_item_from_list
-
