@@ -13,7 +13,9 @@ class Shopper < ActiveRecord::Base
     self.lists.find_by(name: name).destroy
   end
 
+  
   def delete_shopper #deletes shopper and all associated lists and items 
+    
     self.list_items.each do |list_item|
       list_item.destroy
     end

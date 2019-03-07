@@ -25,7 +25,7 @@ class List < ActiveRecord::Base
   end
 
   def check_item(name) # changes the item's still_needed boolean
-    if self.items.include?(name)
+    if self.item_names.include?(name)
       list_item = ListItem.all.find do |inst|
         inst.item.name == name && inst.list_id == self.id
       end
