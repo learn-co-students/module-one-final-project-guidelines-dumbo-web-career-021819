@@ -20,7 +20,9 @@ partylist.add_item('butter')
 partylist.delete_item('butter')
 partylist.add_item('streamers')
 partylist.check_item('streamers')
-carla.delete_list("supper")
+# carla.delete_list("supper")
+carla.delete_shopper
+
 
 
 
