@@ -118,11 +118,11 @@ ActiveRecord::Base.logger = nil
     delete_food_item = food_choice.split(",")
     delete_food_item = delete_food_item[1]
 
-    # if food_choice == 'done' || food_choice == 'Done'
-    #   break
-    # elsif food_choice == "delete,#{delete_food_item}" && Restaurant.find_by(name: restaurant_name).foods.find_by(name: delete_food_item) != nil
-    #   customer_order.delete_food(delete_food_item)
-    # end
+    if food_choice == 'done' || food_choice == 'Done'
+      break
+    elsif food_choice == "delete,#{delete_food_item}" && Restaurant.find_by(name: restaurant_name).foods.find_by(name: delete_food_item) != nil
+      customer_order.delete_food(delete_food_item)
+    end
 
     if Restaurant.find_by(name: restaurant_name).foods.map{|food| food.name}.include?(food_choice)
       customer_order.add_to_order(food_choice)
@@ -162,34 +162,3 @@ ActiveRecord::Base.logger = nil
   puts "------------------------------------------------------------------"
   puts "Thank you for ordering from Grubless! Your order will be there ASAP!"
   puts "------------------------------------------------------------------"
-
-  # Fulfill user story for viewing past orders.
-
-
-
-
-
-
-
-
-
-
-#-------------------------------------------------------------------------------
-  # everything works and the total attribute for the Order is updated
-
-
-  # After we complete a customer's order, what should we do??
-  # In order to refer to past orders, we need to use Order#receive_order
-  # We need to be able to ask the user if they have received their order yet.
-
-  # ^^^ HARD IMPLEMENTATION : allow a user to refer to a past order that they haven't
-  # received and notify the company that they've received that order. ^^
-
-  # EASY IMPLEMENTATION : Keep the console on the have you received your order yet
-  # prompt until they enter yes, which will change the value to true and add the order
-  # to past orders.
-
-  # EASY BETTER IMPLEMENTATION : Do not require Order#past_orders to require that
-  # an order is received, but rather set a condition that says if the order total
-  # is > 0.0 , then push that order into the past_orders array (customer's past orders).
-#-------------------------------------------------------------------------------
