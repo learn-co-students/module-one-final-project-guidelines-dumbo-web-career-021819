@@ -21,6 +21,22 @@ def new_list_for_user
   new_list = List.create
 end
 
+def select_name
+  prompt = TTY::Prompt.new
+  prompt.select("Select your name.", Shopper.all.map(&:name))
+end
+
+@username = select_name
+
+def select_list
+  prompt = TTY::Prompt.new
+  user = Shopper.all.find_by(name: @username)
+  userlists = user.lists.map(&:name)
+  userlists << "-Add New List-"
+  prompt.select("Select a list.", userlists)
+end
+
+select_list
 
 #
 # def flow
@@ -56,7 +72,6 @@ def tty_check_item_on_list
   items = Item.all.map(&:name)
   prompt.select("What item would you like to mark?", items)
 end
-
 
 # userlist.add_item(tty_add_item_to_list)
 # tty_check_item_on_list
