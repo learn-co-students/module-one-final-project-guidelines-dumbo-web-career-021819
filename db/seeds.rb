@@ -50,7 +50,7 @@ grilled_steelhead_trout = Food.create(name: "Grilled Steelhead Trout", price: 27
 hummus = Food.create(name: "Hummus", price: 9.00,   restaurant_id: celestine.id, description: "Urfa biber, crispy artichokes")
 pennsylvania_chicken = Food.create(name: "Pennsylvania Chicken", price: 29.00, restaurant_id: celestine.id, description: "Grapes, almonds, cuccumbers, freekeh")
 grilled_striploin = Food.create(name: "Grilled Striploin", price: 42.00, restaurant_id: celestine.id, description: "Turnip sarladaise, tanzeya, natural jus")
-caraway_roasted_carrots = Food.create(name: "Caraway Roasted Carrtos", price: 29.00, restaurant_id: celestine.id, description: "Saffron rice, yellowfoot chanterelles, cashews")
+caraway_roasted_carrots = Food.create(name: "Caraway Roasted Carrots", price: 29.00, restaurant_id: celestine.id, description: "Saffron rice, yellowfoot chanterelles, cashews")
 mjuderah = Food.create(name: "Mjuderah", price: 11.00, restaurant_id: celestine.id, description: "Lentils, rice, crispy shallots, spiced date")
 charred_caraflex_cabbage = Food.create(name: "Charred Caraflex Cabbage", price: 10.00, restaurant_id: celestine.id, description: "Sumac yogurt, winter citrus")
 chermoula_rubbed_branzino = Food.create(name: "Chermoula Rubbed Branzino for Two", price: 62.00, restaurant_id: celestine.id, description: "Preserved lemon, gold nugget potatoes, radishes, caperberries")
@@ -103,23 +103,23 @@ matt_order_2 = Order.create(restaurant_id: panda_express.id, customer_id: matt.i
 # ------------------------------------------------------------------------------
 # Adding food items to the order
 
-jep_order_1.add_to_order(spring_roll)
+# jep_order_1.add_to_order(spring_roll)
 
-matt_order.add_to_order(chow_mein)
-matt_order.add_to_order(fried_rice)
+# matt_order.add_to_order(chow_mein)
+# matt_order.add_to_order(fried_rice)
 
-matt_order_2.add_to_order(spring_roll)
-matt_order_2.add_to_order(chow_mein)
+# matt_order_2.add_to_order(spring_roll)
+# matt_order_2.add_to_order(chow_mein)
 
 # ------------------------------------------------------------------------------
 # Completing an order (tallies up the total and returns the Order object)
 
-matt_order.complete_order
+# matt_order.complete_order
 
 # ------------------------------------------------------------------------------
 # Changes the status of :received? when the order is received by the customer
 
-matt_order.receive_order
+# matt_order.receive_order
 # ------------------------------------------------------------------------------
 
 

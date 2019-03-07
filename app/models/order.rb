@@ -6,22 +6,22 @@ class Order < ActiveRecord::Base
   @order = []
 
   def grand_total
-    orders = self.order
+    ## error here from
     total = 0.0
-    orders.map do |food_item|
+    self.order.map do |food_item|
       total += food_item.price
     end
-    self.update(total: total)
-    return self
+    return total
   end
 
   # the above order works
 
-  def add_to_order(food) #object
+  def add_to_order(food_name)
+    food_obj = self.foods.find_by(name: food_name)
     if @order == nil
-      @order = [ food ]
+      @order = [ food_obj ]
     else
-      @order << food
+      @order << food_obj
     end
   end
 
@@ -45,11 +45,13 @@ class Order < ActiveRecord::Base
   end
 
   def complete_order
-    return self.grand_total
+    total = self.grand_total
+    self.update(total: total)
+    return self
   end
 
   def show_order
-    self.order.map{ |food_obj| food_obj.name + " : #{food_obj.price}" } + ["Total : #{Order.find(self.id).total}"]
+    self.order.map{ |food_obj| food_obj.name + " : #{food_obj.price}" } + ["Total : #{self.grand_total.round(2)}"]
   end
 
 end

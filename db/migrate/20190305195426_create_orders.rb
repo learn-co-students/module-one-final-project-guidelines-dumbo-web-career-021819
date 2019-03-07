@@ -5,8 +5,7 @@ class CreateOrders < ActiveRecord::Migration
       t.integer :restaurant_id
       t.float :total, default: 0.00
       t.string :location
-      t.boolean :received?, default: false
-      t.string :deliver_or_pickup, default: "deliver"
+      t.string :delivery_or_takeout
       t.string :cash_or_card
     end
   end
