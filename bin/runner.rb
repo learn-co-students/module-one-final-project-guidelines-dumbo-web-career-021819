@@ -118,11 +118,11 @@ ActiveRecord::Base.logger = nil
     delete_food_item = food_choice.split(",")
     delete_food_item = delete_food_item[1]
 
-    if food_choice == 'done' || food_choice == 'Done'
-      break
-    elsif food_choice == "delete,#{delete_food_item}" && Restaurant.find_by(name: restaurant_name).foods.find_by(name: delete_food_item) != nil
-      customer_order.delete_food(delete_food_item)
-    end
+    # if food_choice == 'done' || food_choice == 'Done'
+    #   break
+    # elsif food_choice == "delete,#{delete_food_item}" && Restaurant.find_by(name: restaurant_name).foods.find_by(name: delete_food_item) != nil
+    #   customer_order.delete_food(delete_food_item)
+    # end
 
     if Restaurant.find_by(name: restaurant_name).foods.map{|food| food.name}.include?(food_choice)
       customer_order.add_to_order(food_choice)
