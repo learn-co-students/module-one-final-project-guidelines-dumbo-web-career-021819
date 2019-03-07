@@ -37,12 +37,12 @@ class Order < ActiveRecord::Base
 
   # create a method that says a customer received the order
 
-  def receive_order
-    if self.total > 0.0
-      self.update(received?: true)
-      return self
-    end
-  end
+  # def receive_order
+  #   if self.total > 0.0
+  #     self.update(received?: true)
+  #     return self
+  #   end
+  # end
 
   def complete_order
     total = self.grand_total
@@ -53,5 +53,6 @@ class Order < ActiveRecord::Base
   def show_order
     self.order.map{ |food_obj| food_obj.name + " : #{food_obj.price}" } + ["Total : #{self.grand_total.round(2)}"]
   end
+
 
 end
