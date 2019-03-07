@@ -10,17 +10,20 @@ class Shopper < ActiveRecord::Base
   end
 
   def delete_list(name) #doesn't work in console, but works from runner file
-    # puts "im in the method"
-    # binding.pry
     self.lists.find_by(name: name).destroy
   end
 
-  def delete_shopper # Should it also delete all associated ListItems? YES 
+  def delete_shopper # Should it also delete all associated ListItems? YES
+    p 1
     self.list_items.each do |list_item|
       list_item.destroy
     end
-    # self.lists.destroy
-    # self.destroy
+    p 2
+    self.lists.each do |list|
+      list.destroy
+    end
+    p 3
+    self.destroy
   end
 
   def list_names #returns an array of all list names of shopper

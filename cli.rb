@@ -6,24 +6,25 @@ require_relative 'config/environment.rb'
 prompt = TTY::Prompt.new
 
 
-
-# welcome =  prompt.select("Welcome! What would you like to do?", %w(CreateList AddToList))
+ #
+ # welcome =  prompt.select("Welcome to GroCart!", ["Create New User", "Log In"])
 # =>
 # Choose your destiny? (Use arrow keys, press Enter to select)
 # ‣ Scorpion
 #   Kano
 #   Jax
 
-shopper_names = []
+choices = [
+  {name: 'Create New User', value: Shopper.create},
+  {name: 'Log In', value: List.new }
+]
 
-def who_am_i
-  prompt = TTY::Prompt.new
-  prompt.select("Welcome to GroCart! Who's Here?") do   |Shopper.all|
-    Shopper.all.name
-    Shopper.all.name.choice
-    option.choice "New Name"
-  end
+prompt.select('What to do?') do |beginning|
+  beginning.choice "Create New User"
+  beginning.choice "Create New List"
 end
+
+
 
 
 
@@ -52,9 +53,9 @@ def welcome_choice
   end
 end
 
-def
 
-who_am_i
+
+
 
 
 binding.pry
