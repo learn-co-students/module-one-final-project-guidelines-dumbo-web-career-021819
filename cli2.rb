@@ -3,7 +3,8 @@ require 'pry'
 require_relative 'config/environment.rb'
 prompt = TTY::Prompt.new
 
-#
+
+
 def who_am_i
   prompt = TTY::Prompt.new
   options = ["Login", "New User"]
@@ -15,10 +16,12 @@ def sign_up
   prompt.ask("What is your name?", required: true)
 end
 
-@username = sign_up
+@username = Shopper.create(name: sign_up)
 
 def new_list_for_user
-  new_list = List.create
+  prompt = TTY::Prompt.new
+  new_list_name = prompt.ask("What would you like to call your list?", required: true)
+  List.create(name: new_list_name, shopper_id: @username.id)
 end
 
 def select_name
@@ -36,30 +39,10 @@ def select_list
   prompt.select("Select a list.", userlists)
 end
 
-select_list
-
-#
-# def flow
-#
-#   if who_am_i == 'Login'
-#     puts 'Heyyyyyy againnn'
-#   else
-#     puts 'Fresh meat!'
-#   end
-# end
-#
-# flow
-
-# username = Shopper.all[0]
-# userlist = username.lists[0]
-
-
 def tty_add_item_to_list
   prompt = TTY::Prompt.new
   prompt.ask("What would you like to add?", required: true)
 end
-
-
 
 def tty_delete_item_from_list
   prompt = TTY::Prompt.new
