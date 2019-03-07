@@ -7,16 +7,21 @@ prompt = TTY::Prompt.new
 
 def who_am_i
   prompt = TTY::Prompt.new
-  puts List.all[1].name
   prompt.select("Welcome to GroCart! Who's Here?", %w(Login New_User))
 end
+
 def flow
-  who_am_i
   if who_am_i == 'Login'
-    puts 'Heyyyyyy againnn'
+    login
   else
     puts 'Fresh meat!'
   end
+end
+
+def login
+  prompt = TTY::Prompt.new
+  shoppers = Shopper.all.map(&:name)
+  prompt.select("Welcome to GroCart! Who's Here?", shoppers)
 end
 
 flow
