@@ -1,9 +1,9 @@
 require_relative '../config/environment.rb'
 
 
-Shopper.destroy_all
-ListItem.destroy_all
-List.destroy_all
+# Shopper.destroy_all
+# ListItem.destroy_all
+# List.destroy_all
 
 
 
