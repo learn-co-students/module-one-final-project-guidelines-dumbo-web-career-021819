@@ -2,6 +2,7 @@ require 'pry'
 class List < ActiveRecord::Base
   belongs_to :shopper
   has_many :list_items
+  has_many :items, through: :list_items
 
   ################ .downcase all List and Item names! ##############
 
@@ -35,9 +36,9 @@ class List < ActiveRecord::Base
     end
   end
 
-  def items #lists all item names that are NOT checked in the list
-    self.list_items.where(still_needed: true).map(&:item).map(&:name)
-  end
+  # def items #lists all item names that are NOT checked in the list
+  #   self.list_items.where(still_needed: true).map(&:item).map(&:name)
+  # end
 
   def checked_off # lists all item names that ARE checked in the list.
     self.list_items.where(still_needed: false).map(&:item).map(&:name)
