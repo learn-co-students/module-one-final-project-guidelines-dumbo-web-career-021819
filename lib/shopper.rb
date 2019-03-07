@@ -13,16 +13,13 @@ class Shopper < ActiveRecord::Base
     self.lists.find_by(name: name).destroy
   end
 
-  def delete_shopper # Should it also delete all associated ListItems? YES
-    p 1
+  def delete_shopper # Should it also delete all associated ListItems?
     self.list_items.each do |list_item|
       list_item.destroy
     end
-    p 2
     self.lists.each do |list|
       list.destroy
     end
-    p 3
     self.destroy
   end
 
