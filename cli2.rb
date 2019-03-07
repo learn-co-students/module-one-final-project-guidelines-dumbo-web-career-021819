@@ -15,6 +15,12 @@ def sign_up
   prompt.ask("What is your name?", required: true)
 end
 
+@username = sign_up
+
+def new_list_for_user
+  new_list = List.create
+end
+
 def select_name
   prompt = TTY::Prompt.new
   prompt.select("Select your name.", Shopper.all.map(&:name))
