@@ -1,71 +1,140 @@
 require_relative '../config/environment'
+ActiveRecord::Base.logger = nil
+# prompt = TTY::Prompt.new
 
-class Runner
-  puts "Hello! Welcome to Grubless"
-  puts "What is your name?"
+  # GET CUSTOMER NAME
+  puts "------------------------------------------------------------------"
+  puts "Welcome to Grubless !"
+  puts "What's your name ?"
+  puts "------------------------------------------------------------------"
   customer_name = gets.chomp
-  Customer.create(name: customer_name)
+  puts "------------------------------------------------------------------"
+  customer = Customer.create(name: customer_name)
+
+  # CUSTOMER CHOOSES RESTAURANT
+
+  puts "Thanks for choosing Grubless #{customer_name} !"
+  puts "------------------------------------------------------------------"
+  # puts "Restaurant List:"
+  # puts Restaurant.all_names
+  # puts "What restaurant would you like to choose?"
+  restaurant_name = nil
+  until Restaurant.find_by(name: restaurant_name).is_a?(Restaurant) == true
+    puts "Choose a restaurant from the following list:"
+    puts Restaurant.all_names
+    puts "------------------------------------------------------------------"
+    restaurant_name = gets.chomp
+    puts "------------------------------------------------------------------"
+    if Restaurant.find_by(name: restaurant_name) != nil
+      restaurant = Restaurant.find_by( name: restaurant_name )
+      customer_order = Order.create( customer_id: customer.id, restaurant_id: restaurant.id )
+    else
+      puts "Sorry, we don't work with that restaurant currently.."
+      puts "------------------------------------------------------------------"
+    end
+  end
+  puts "Great choice !"
+  puts "------------------------------------------------------------------"
 
 
-  puts "Thanks for choosing Grubless, #{customer_name}"
-  puts "What restaurant would you like to choose?"
-  puts Restaurant.all_names
-  restaurant_name = gets.chomp
-  customer_order = Order.create(customer_id: Customer.find_by(name: customer_name).id, restaurant_id: Restaurant.find_by(name: restaurant_name).id)
-  puts "Would you like a 'delivery' or 'pick up'?"
-  obtain_food = gets.chomp.downcase
-  until obtain_food == "delivery" || obtain_food == "pick up"
-    # didn't ask for our location
-    if obtain_food == "delivery"
-      puts "Where would you like the food to be delivered?"
+  # CUSTOMER CHOOSES DELIVERY OR TAKEOUT & CHOOSES DELIVERY LOCATION
+
+  d_or_t = nil
+  until d_or_t == "delivery" || d_or_t == "takeout"
+    puts "How would you like to receive your order?"
+    puts "Enter 'delivery' or 'takeout' :"
+    puts "------------------------------------------------------------------"
+    d_or_t = gets.chomp.downcase
+    puts "------------------------------------------------------------------"
+    if d_or_t == "delivery"
+      puts "Where should we deliver your food?"
+      puts "------------------------------------------------------------------"
       order_address = gets.chomp
-      customer_order.update(deliver_or_pickup: "delivery")
+      puts "------------------------------------------------------------------"
+      customer_order.update(delivery_or_takeout: d_or_t)
       customer_order.update(location: order_address)
-    elsif obtain_food == "pick up"
-      customer_order.update(deliver_or_pickup: "pick up")
+    elsif d_or_t == "takeout"
+      customer_order.update(delivery_or_takeout: d_or_t)
+      customer_order.update(location: restaurant.location )
     else
-      puts "Please enter a valid response"
-      obtain_food = gets.chomp
+      puts "That method of receiving an order isn't availble yet.."
     end
   end
 
-  puts "Would you like to pay with cash or card?"
-  payment_method = gets.chomp.downcase
+  # CUSTOMER CHOOSES WHETHER THEY WANT TO PAY WITH CASH OR CARD
+
+  payment_method = nil
   until payment_method == "cash" || payment_method == "card"
-    if payment_method == "cash"
-      customer_order.update(cash_or_card: "cash")
-    elsif payment_method == "card"
-      customer_order.update(cash_or_card: "card")
+    puts "How will you pay for your order?"
+    puts "Enter 'cash' or 'card' :"
+    puts "------------------------------------------------------------------"
+    payment_method = gets.chomp.downcase
+    puts "------------------------------------------------------------------"
+
+    if payment_method == "cash" || payment_method == "card"
+      customer_order.update(cash_or_card: payment_method)
+
+    # elsif payment_method == "card"
+    #   customer_order.update(cash_or_card: "card")
     else
-      puts "Please select cash or card"
-      payment_method = gets.chomp
+      puts "You can't pay us in that!"
+      puts "------------------------------------------------------------------"
     end
   end
 
+  # ADD ITEMS TO THE ORDER
+  # * can only use Order#complete_order once you have used Order#add_to_order
+  # * can only use Order#receive_order once you have used Order#complete_order
 
-  # not good
-  puts "Great choice!"
+
   order_done = ""
+  puts "Here's the menu for this restaurant:"
+
   until order_done == "done"
-    # doesn't work
-    formatted_menu = Restaurant.find_by(name: restaurant_name).show_menu.map do |food_item|
+    formatted_menu = restaurant.show_menu.map do |food_item|
       puts "#{food_item[0]} | #{food_item[1]} | #{food_item[2]}"
     end
-    puts "What would you like to order?"
+    puts "------------------------------------------------------------------"
+    puts "What would you like to add to your order? (if nothing else type 'done')"
+    puts "Type in the name of the food exactly as it appears in the menu:"
+    puts "------------------------------------------------------------------"
     # allows us to enter foods that are not on the menu
     food_choice = gets.chomp
-    if Restaurant.find_by(name: "Andiamo").foods.map{|food| food.name}.include?(food_choice)
+    puts "------------------------------------------------------------------"
+    if food_choice == 'done' || food_choice == 'Done'
+      break
+    end
+
+    if Restaurant.find_by(name: restaurant_name).foods.map{|food| food.name}.include?(food_choice)
       customer_order.add_to_order(food_choice)
-      puts "Would you like to order more? If not, type 'done'"
-      order_done = gets.chomp
+
+      puts customer_order.show_order
+      puts "------------------------------------------------------------------"
+      # Healthy Heart Salad : 8.95
+      # Healthy Heart Salad : 8.95
+      # Tri-Color Salad : 8.95 BUG HERE , THE TOTAL IS LONG NUM
     else
       formatted_menu
       puts "That dish is not on the menu. Please type in a dish from the menu:"
-      food_choice = gets.chomp
+      puts "------------------------------------------------------------------"
     end
   end
 
-end
+  # the second time you enter a food, the order is not shown
+
+  # also the second time you enter a food, it doesn't ask if you're done with your order.
+
+  # order isn't shown after you type done when selecting from resauraunt menu
+
+
+  customer_order.complete_order
+
+  puts customer_order.show_order
+  puts "------------------------------------------------------------------"
+  puts "Thank you for ordering from Grubless! Your order will be there ASAP!"
+  puts "------------------------------------------------------------------"
+
+  # Fulfill user story for viewing past orders.
 
 
 
@@ -74,10 +143,23 @@ end
 
 
 
-# ------------------------------------------------------------------------------
-# WHEN USING Restaurant#show_menu (AFTER A USER SELECTS A RESTAURANT)
-# ------------------------------------------------------------------------------
-# wierd thing about using an array is that each entry is automatically output onto a new line,
-# but you will need to edit your output so that each line is displayed as such vvvvvvv
-# Spring Roll | $4.00 | Rolled appetizer filled with roast pork, carrots, and cabbage |
-# ------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+  # everything works and the total attribute for the Order is updated
+
+
+  # After we complete a customer's order, what should we do??
+  # In order to refer to past orders, we need to use Order#receive_order
+  # We need to be able to ask the user if they have received their order yet.
+
+  # ^^^ HARD IMPLEMENTATION : allow a user to refer to a past order that they haven't
+  # received and notify the company that they've received that order. ^^
+
+  # EASY IMPLEMENTATION : Keep the console on the have you received your order yet
+  # prompt until they enter yes, which will change the value to true and add the order
+  # to past orders.
+
+  # EASY BETTER IMPLEMENTATION : Do not require Order#past_orders to require that
+  # an order is received, but rather set a condition that says if the order total
+  # is > 0.0 , then push that order into the past_orders array (customer's past orders).
+#-------------------------------------------------------------------------------
