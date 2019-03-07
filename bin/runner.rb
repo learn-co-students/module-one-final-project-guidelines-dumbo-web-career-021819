@@ -9,7 +9,19 @@ ActiveRecord::Base.logger = nil
   puts "------------------------------------------------------------------"
   customer_name = gets.chomp
   puts "------------------------------------------------------------------"
-  customer = Customer.create(name: customer_name)
+  if Customer.find_by(name: customer_name) == nil
+    customer = Customer.create(name: customer_name)
+  else
+    customer = Customer.find_by(name: customer_name)
+  end
+    # puts "Would you like to see your past orders? If so, type 'yes' else press Enter."
+    # history_input = gets.chomp.downcase
+    # if history_input == "yes"
+
+      # Take user input, ask for which item in the array. Subtract input by 1 b/c of mismatch indexes
+      # then choose which order they would like to reorder. Refer to past_orders array[history_input]
+      # Make a new instance but with the same items.
+    # end
 
   # CUSTOMER CHOOSES RESTAURANT
 
@@ -135,6 +147,7 @@ ActiveRecord::Base.logger = nil
   puts "------------------------------------------------------------------"
 
   # Fulfill user story for viewing past orders.
+
 
 
 

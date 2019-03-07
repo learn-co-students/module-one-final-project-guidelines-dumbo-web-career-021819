@@ -103,7 +103,7 @@ matt_order_2 = Order.create(restaurant_id: panda_express.id, customer_id: matt.i
 # ------------------------------------------------------------------------------
 # Adding food items to the order
 
-# jep_order_1.add_to_order(spring_roll)
+jep_order_1.add_to_order(spring_roll)
 
 # matt_order.add_to_order(chow_mein)
 # matt_order.add_to_order(fried_rice)
