@@ -1,6 +1,5 @@
 require_relative '../config/environment'
 
-# prompt = TTY::Prompt.new
 class Grubless
   attr_accessor :customer, :order, :restaurant
 
@@ -113,14 +112,7 @@ class Grubless
       delete_food_item = food_choice.split(',')
       delete_food_item = delete_food_item[1]
 
-      # elsif food_choice == "delete,#{delete_food_item}" &&
-      #   Restaurant.find_by(name: restaurant_name).foods.find_by(name: delete_food_item) != nil &&
-      #   customer_order.order.include?(Food.find_by(name: delete_food_item))
-      #   # Set a condition that if a food isn't on your menu, puts "That item is not in your order"
-      #   customer_order.delete_food(delete_food_item)
-      # end
       if food_choice == 'done' || food_choice == 'Done'
-        # when we type in done, Order.order is set equal to an empty array
         break
       elsif food_choice == "delete,#{delete_food_item}" &&
         Restaurant.find_by(name: restaurant.name).foods.find_by(name: delete_food_item) != nil
@@ -153,5 +145,131 @@ class Grubless
     puts customer_order.show_order
     puts '------------------------------------------------------------------'
     puts "Thank you for ordering from Grubless #{customer.name}! Your order will be there ASAP!"
+  end
+end
+
+
+# TTY Prompt section
+
+
+class TtyGrubless
+  attr_accessor :customer, :order, :restaurant, :prompt
+
+
+  def initialize
+    @customer = nil
+    @order = nil
+    @restaurant = nil
+    @prompt = TTY::Prompt.new
+  end
+
+  def create_customer
+    customer_name = prompt.ask("Welcome to Grubless! What's your name?") do |q|
+                      q.required true
+                      q.modify :capitalize
+                      q.convert -> (input) { input.to_s }
+                    end
+    @customer = if Customer.find_by(name: customer_name).nil?
+                  Customer.create(name: customer_name)
+                else
+                  Customer.find_by(name: customer_name)
+                end
+    puts '------------------------------------------------------------------'
+    puts "Thanks for choosing Grubless #{customer_name}!"
+    puts '------------------------------------------------------------------'
+  end
+
+  def choose_restaurant
+    restaurants = Restaurant.all_names
+    restaurant_name = prompt.enum_select('Choose a restaurant from the following list:', restaurants)
+    @restaurant = Restaurant.find_by(name: restaurant_name)
+    puts '------------------------------------------------------------------'
+    puts 'Great choice!'
+    puts '------------------------------------------------------------------'
+  end
+
+  def create_order
+    @order = Order.create(customer_id: @customer.id, restaurant_id: @restaurant.id)
+  end
+
+  def order_details
+    d_or_t_opts = %w(delivery takeout)
+    @order.delivery_or_takeout = prompt.enum_select('How would you like to receive your order?', d_or_t_opts)
+    if @order.delivery_or_takeout == 'delivery'
+
+      @order.location = prompt.ask("Where would you like your order delivered?") do |q|
+                          q.required true
+                          q.convert -> (location) { location.to_s }
+                        end
+    else
+      @order.location = @restaurant.location
+    end
+    puts '------------------------------------------------------------------'
+    #above works
+    @order.cash_or_card = prompt.enum_select('How will you pay for your order?', ["cash", "card"])
+    puts '------------------------------------------------------------------'
+    if @order.cash_or_card == "card"
+      card_info = prompt.collect do
+        key(:name).ask("Enter the cardholder's name:")
+        key(:card_number).ask('Enter card number (XXXX-XXXX-XXXX-XXXX):') do |card_num|
+          card_num.validate(/\A\d{4}\-\d{4}\-\d{4}\-\d{4}\Z/, 'Incorrect card number format')
+        end
+        key(:expiration_date).ask("Enter expiration date (XX-XX):") do |exp_date|
+          exp_date.validate(/\A\d{2}\-\d{2}\Z/, 'Invalid expiration date')
+        end
+        key(:cvv).ask("Enter CVV number (XXX):") do |cvv|
+          cvv.validate(/\A\d{3}\Z/, 'Not a valid CVV')
+        end
+      end
+      puts '------------------------------------------------------------------'
+      puts "Cardholder Name: #{card_info[:name]}"
+      puts "Card Number: #{card_info[:card_number]}"
+      puts "Expiration Date: #{card_info[:expiration_date]}"
+      puts "CVV: #{card_info[:cvv]}"
+      puts '------------------------------------------------------------------'
+    end
+  end
+
+  # this part is not as effective as it could be - we should be able to delete
+  # many items as we want ('keep asking if they would like to delete an item
+  # after they've deleted one')
+
+  #
+
+  def choose_food
+    finished =  nil
+    until finished == true
+      menu = @restaurant.show_menu
+      food_choice = prompt.enum_select('What would you like to add to your order?', menu)
+      food_name = food_choice.split(' | ')[0]
+      food = @restaurant.foods.find_by(name: food_name)
+      @order.add_to_order(food_name)
+      puts '------------------------------------------------------------------'
+      puts @order.show_order
+      puts '------------------------------------------------------------------'
+      delete_q = prompt.yes?('Would you like to delete any items from your order?')
+      puts '------------------------------------------------------------------'
+      done_delete = false
+      if delete_q == true
+        until done_delete == true
+          show_order = @order.order.map{|food| food.name }
+          delete_item = prompt.enum_select('What item would you like to remove from your order?', show_order)
+          puts '------------------------------------------------------------------'
+          @order.delete_food(delete_item)
+          done_delete = prompt.yes?('Are you done deleting items from your order?')
+          puts '------------------------------------------------------------------'
+        end
+      end
+      finished = prompt.yes?("Are you finished ordering?")
+      puts '------------------------------------------------------------------'
+    end
+  end
+
+  def finish_order
+    @order.complete_order
+    puts @order.show_order
+    puts '------------------------------------------------------------------'
+    puts "Thank you for ordering from Grubless #{customer.name}! Your order will be there ASAP!"
+    puts '------------------------------------------------------------------'
   end
 end

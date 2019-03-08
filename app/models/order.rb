@@ -12,7 +12,7 @@ class Order < ActiveRecord::Base
   end
 
   def show_order
-    order.map { |food_obj| food_obj.name + " : #{food_obj.price}" } + ["Total : #{grand_total.round(2)}"]
+    @order.map { |food_obj| food_obj.name + " : #{food_obj.price}" } + ["Total : #{grand_total.round(2)}"]
   end
 
   def complete_order
