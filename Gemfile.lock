@@ -169,6 +169,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   database_cleaner
+  minitest (~> 5.1)
   pry
   rake
   require_all
