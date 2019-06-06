@@ -1,7 +1,7 @@
 # Grubless
 > Grubless is a CLI app that allows a customer to order food through their command line.
 
-[![Ruby Version][ruby-image]][npm-url]
+[![Ruby Version][ruby-image]][ruby-url]
 
 A CLI app that allows a user to order from a select number of restaurants in the Brooklyn area. A user is able to choose a restaurant, choose if they want their food delivered or whether it'll be a takeout order, choose the food, and select payment method. DISCLAIMER: Doesn't not allow a user to actually order food through the command line - this only mimics the process that would be necessary to order food through the command line. ALSO, it does not store or secure credit card information.
 
