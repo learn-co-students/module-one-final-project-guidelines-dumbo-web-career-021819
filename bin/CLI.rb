@@ -1,6 +1,9 @@
 require_relative '../config/environment'
 require_relative './runner.rb'
 
+# commented out code below is the command line interface not using the TTY
+# prompt gem 
+
 # puts "Logging in..."
 # done_in_app = nil
 # grubless_session = Grubless.new

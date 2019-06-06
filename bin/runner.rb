@@ -234,8 +234,6 @@ class TtyGrubless
   # many items as we want ('keep asking if they would like to delete an item
   # after they've deleted one')
 
-  #
-
   def choose_food
     finished =  nil
     until finished == true
