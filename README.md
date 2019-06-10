@@ -34,7 +34,9 @@ bundle exec ruby bin/CLI.rb
 Written By:
 
 Matthew Campbell – matjocampbell@gmail.com
+
 [https://github.com/campbelllssoup](https://github.com/campbelllssoup)
 
 Jep Alorro - jep.alorro@flatironschool.com
+
 [https://github.com/jralorro93](https://github.com/jralorro93)
