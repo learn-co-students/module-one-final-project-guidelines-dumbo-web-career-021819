@@ -26,7 +26,7 @@ bundle
 3) Now that you've installed all the necessary dependencies run the following command to run the application:
 
 ```sh
-bundle exec ruby bin/CLI.rb
+bundle exec ruby bin/runner.rb
 ```
 
 ## Meta
