@@ -1,10 +1,8 @@
-# Module One Final Project Guidelines
+# Grocery List
 
-Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
+Description:
 
-For your final project, we'll be building a Command Line database application.
-
-## Project Requirements
+## Functions
 
 ### Option One - Data Analytics Project
 
